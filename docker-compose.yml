@@ -1,5 +1,3 @@
-version: "3.3"
-
 networks:
   kodzuverse:
     driver: bridge
@@ -8,20 +6,21 @@ networks:
 services:
   postgres:
     container_name: postgres
-    image: postgres
+    image: timescale/timescaledb:latest-pg18
     restart: always
+    shm_size: 256mb
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - ./data/postgres:/var/lib/postgresql
     env_file:
       - .env
     ports:
-      - 5432:5432
+      - "5432:5432"
     networks:
       - kodzuverse
 
   pgadmin:
     container_name: pgadmin
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:9
     restart: always
     volumes:
       - ./data/pgadmin:/var/lib/pgadmin
@@ -31,3 +30,4 @@ services:
       - "5050:80"
     networks:
       - kodzuverse
+
